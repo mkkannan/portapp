@@ -1,0 +1,48 @@
+ID: port_test_app
+_schema-version: '2.1'
+version: 0.0.1
+modules:
+  - name: port_test_app_db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: port_test_app_hdi_db
+        properties:
+          TARGET_CONTAINER: '~{hdi-container-name}'
+  - name: port_test_app_node
+    type: nodejs
+    path: node
+    provides:
+      - name: node_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: port_test_app_hdi_db
+      - name: port_test_app-uaa
+  - name: port_test_app_ui
+    type: html5
+    path: ui
+    parameters:
+      port: 51111
+      route-path: /portapp
+    requires:
+      - name: node_api
+        properties:
+          url: '~{url}'
+          name: node_api
+          forwardAuthToken: true
+        group: destinations
+      - name: port_test_app-uaa
+resources:
+  - name: port_test_app_hdi_db
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
+  - name: port_test_app-uaa
+    type: com.sap.xs.uaa
+    parameters:
+      service-name: port_test_app-uaa
+      service-plan: space

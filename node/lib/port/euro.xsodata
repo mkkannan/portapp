@@ -1,0 +1,3 @@
+service {
+  "continent.world" as "euro";
+}

@@ -1,0 +1,5 @@
+context continent {
+entity world {
+        key continent : String(100);
+    }
+};

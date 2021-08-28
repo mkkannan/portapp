@@ -1,0 +1,14 @@
+{
+	"xsappname": "port_test_app",
+	"scopes": [{
+		"name": "$XSAPPNAME.view",
+		"description": "View data"
+	}],
+	"role-templates": [{
+		"name": "SecurityView",
+		"description": "Role for viewing data",
+		"scope-references": ["$XSAPPNAME.view"]
+
+	}]
+
+}
